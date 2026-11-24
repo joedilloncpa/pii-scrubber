@@ -8,6 +8,7 @@ or double-click "Start PII Scrubber" (Mac: .command, Windows: .bat).
 
 from __future__ import annotations
 
+import base64
 import hashlib
 from pathlib import Path
 from collections import Counter
@@ -26,7 +27,13 @@ st.markdown(
     <style>
     [data-testid="stFileChipName"], [data-testid="stFileUploaderFileName"] { visibility: hidden !important; }
     .block-container { padding-top: 2.2rem; max-width: 1150px; }
-    div[data-testid="stMetric"] { background: #F2F6F3; border-radius: 10px; padding: 10px 14px; }
+    h1 { color: #123524 !important; letter-spacing: -0.02em; }
+    h3 { color: #123524 !important; }
+    div[data-testid="stMetric"] { background: #EAF4EE; border-radius: 10px; padding: 10px 14px; }
+    div[data-testid="stMetric"] [data-testid="stMetricValue"] { color: #123524; }
+    .cb-footer { display:flex; align-items:center; gap:12px; color:#7D8C83; font-size:0.8rem; }
+    .cb-footer a { color:#1E7A4D; text-decoration:none; }
+    .cb-disclaimer { color:#7D8C83; font-size:0.78rem; margin-top:0.6rem; line-height:1.4; }
     </style>
     """,
     unsafe_allow_html=True,
@@ -56,6 +63,28 @@ settings = Settings(
     company_label=(company_label.strip() or "Company"),
     always_scrub=[l for l in always.splitlines() if l.strip()],
 )
+
+# ---------------------------------------------------------------------------
+# Footer (shown on every screen)
+# ---------------------------------------------------------------------------
+
+LOGO_PATH = Path(__file__).parent / "docs" / "chainbridge-logo.png"
+
+
+def footer():
+    st.markdown("<hr style='border:none;border-top:1px solid #E7EDE8;margin:3rem 0 1rem'>", unsafe_allow_html=True)
+    logo_html = ""
+    if LOGO_PATH.exists():
+        b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode()
+        logo_html = f"<img src='data:image/png;base64,{b64}' alt='Chainbridge Accounting & Advisory' style='height:26px'>"
+    st.markdown(
+        f"<div class='cb-footer'>{logo_html}<span>Built by "
+        f"<a href='https://chainbridgeaccounting.com' target='_blank'>Chainbridge Accounting &amp; Advisory</a></span></div>"
+        "<p class='cb-disclaimer'>This tool uses pattern matching and will not catch everything. "
+        "Review the scrubbed file and the lists above before you share it. You are responsible for confirming the results are complete and accurate.</p>",
+        unsafe_allow_html=True,
+    )
+
 
 # ---------------------------------------------------------------------------
 # Step 1: choose type and upload
@@ -90,6 +119,7 @@ if up is None:
             fpath = sample_dir / fname
             if fpath.exists():
                 col.download_button(f"⬇ Sample: {label}", fpath.read_bytes(), file_name=fname, width="stretch", key=f"dl_{fname}")
+    footer()
     st.stop()
 
 detected = file_type_for(up.name)
@@ -209,6 +239,7 @@ if go:
 
 res = st.session_state.get("result")
 if not res:
+    footer()
     st.stop()
 out_bytes, ext, issues, key_bytes, all_findings = res
 
@@ -239,3 +270,5 @@ with st.expander("Preview of the scrubbed file", expanded=True):
     else:
         for img in doc.render_pages(out_bytes, limit_pages=2):
             st.image(img, width="stretch")
+
+footer()
