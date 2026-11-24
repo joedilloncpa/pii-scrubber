@@ -63,7 +63,7 @@ You don't need to know how to code. You need Python, which is free, and this fol
 
 Four practice files come with it. Every name, number and address in them is invented, so you can watch the scrubber work before trusting it with real data.
 
-Inside the app, the **Test the app** section (shown before you upload anything) lets you run any of them with one click, or download a copy to open alongside the scrubbed result. You can also download them here:
+Download one, then upload it in the app the same way you would any real file. The download buttons also appear at the bottom of the app's start screen.
 
 | Sample | What's in it | Download |
 |---|---|---|
@@ -72,7 +72,7 @@ Inside the app, the **Test the app** section (shown before you upload anything) 
 | Engagement letter (Word) | Names in prose, a table, a footer, bold text spanning a company name | [sample_engagement_letter.docx](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_engagement_letter.docx) |
 | Employee form (PDF) | A one-page HR form; shows true redaction with labels printed on the boxes | [sample_employee_form.pdf](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_employee_form.pdf) |
 
-A good first test: download the Word sample, open it, then run it in the app and compare. You should see every name become Person N, both companies become Company N, and the SSN, phone, email, address, account numbers and date of birth turn into X's. The review list will ask you about the names it found in prose.
+A good first test: download the Word sample, open it to see what's in it, then upload it to the app (file type: Word) and compare. You should see every name become Person N, both companies become Company N, and the SSN, phone, email, address, account numbers and date of birth turn into X's. The review list will ask you about the names it found in prose.
 
 ## What it catches
 

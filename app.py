@@ -77,33 +77,26 @@ SAMPLES = {
     "Employee form (PDF)": "sample_employee_form.pdf",
 }
 sample_dir = Path(__file__).parent / "samples"
-sample_choice = None
 if up is None:
     st.info("Pick the file type, then drop a file in. You'll see exactly what gets scrubbed before anything is downloaded.")
     if sample_dir.exists():
-        st.subheader("Test the app")
-        st.write("Four practice files come with the app. Every name, number and address in them is invented. "
-                 "Pick one to run it here, or download a copy to open and compare against the scrubbed result.")
-        sample_choice = st.selectbox("Run a sample file", ["(choose)"] + list(SAMPLES), index=0)
-        if sample_choice == "(choose)":
-            sample_choice = None
+        st.write("")
+        st.write("")
+        st.markdown("<p style='color:#556259;font-size:0.9rem;margin-bottom:0.2rem'><b>Want to test it first?</b> "
+                    "Download one of these practice files (all names and numbers are invented), "
+                    "then upload it above like any other file.</p>", unsafe_allow_html=True)
         dl_cols = st.columns(len(SAMPLES))
         for col, (label, fname) in zip(dl_cols, SAMPLES.items()):
             fpath = sample_dir / fname
             if fpath.exists():
-                col.download_button(f"Download {label}", fpath.read_bytes(), file_name=fname, width="stretch", key=f"dl_{fname}")
-    if sample_choice is None:
-        st.stop()
-    sample_path = sample_dir / SAMPLES[sample_choice]
-    data = sample_path.read_bytes()
-    file_type = file_type_for(sample_path.name)
-    st.caption("Running on the sample file.")
-else:
-    detected = file_type_for(up.name)
-    if detected and detected != file_type:
-        st.error(f"That looks like a {detected} file. Change the file type above to {detected} and upload it again.")
-        st.stop()
-    data = up.getvalue()
+                col.download_button(f"⬇ Sample: {label}", fpath.read_bytes(), file_name=fname, width="stretch", key=f"dl_{fname}")
+    st.stop()
+
+detected = file_type_for(up.name)
+if detected and detected != file_type:
+    st.error(f"That looks like a {detected} file. Change the file type above to {detected} and upload it again.")
+    st.stop()
+data = up.getvalue()
 job_key = hashlib.sha256(data + repr((file_type, settings.name_label, settings.company_label, tuple(settings.always_scrub))).encode()).hexdigest()
 
 if st.session_state.get("job_key") != job_key:
