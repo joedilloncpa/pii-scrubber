@@ -76,7 +76,7 @@ def footer():
     logo_html = ""
     if LOGO_PATH.exists():
         b64 = base64.b64encode(LOGO_PATH.read_bytes()).decode()
-        logo_html = f"<img src='data:image/png;base64,{b64}' alt='Chainbridge Accounting & Advisory' style='height:26px'>"
+        logo_html = f"<img src='data:image/png;base64,{b64}' alt='Chainbridge Accounting & Advisory' style='height:40px'>"
     st.markdown(
         f"<div class='cb-footer'>{logo_html}<span>Built by "
         f"<a href='https://chainbridgeaccounting.com' target='_blank'>Chainbridge Accounting &amp; Advisory</a></span></div>"
