@@ -6,13 +6,15 @@ It replaces people's names with Person 1, Person 2, ... and company names with C
 
 Nothing leaves your machine. There is no server, no account and no internet traffic once it's installed.
 
+**Download:** [pii-scrubber.zip](https://github.com/joedilloncpa/pii-scrubber/releases/latest/download/pii-scrubber.zip) (latest release, no GitHub account needed)
+
 ![What you see after dropping a file in](docs/screenshot.jpg)
 
 ## The easy way: let your AI assistant install it
 
 If you use Claude (or another AI assistant that can run things on your computer), paste this:
 
-> Install the PII Scrubber from https://github.com/joedilloncpa/pii-scrubber on my computer and start it. Follow the "Instructions for AI assistants" section in its README exactly.
+> Install the PII Scrubber on my computer and start it. Download it from https://github.com/joedilloncpa/pii-scrubber/releases/latest/download/pii-scrubber.zip and follow the "Instructions for AI assistants" section of the README inside the zip exactly.
 
 Then skip to **Using it** below. If you'd rather do it yourself, the manual steps follow.
 
@@ -22,7 +24,7 @@ Then skip to **Using it** below. If you'd rather do it yourself, the manual step
 You are installing a local Streamlit app for a person who is not technical. Do each step, check it worked, and explain in one plain sentence what you did. Ask before installing Python.
 
 1. Check for Python 3.9 or newer: `python3 --version` on Mac, `py -3 --version` or `python --version` on Windows. If it is missing or older, tell the person to install it from https://www.python.org/downloads/ (on Windows they must tick "Add python.exe to PATH" on the first installer screen) and wait for them to confirm before continuing.
-2. Get the code into their Documents folder. Preferred: `git clone https://github.com/joedilloncpa/pii-scrubber.git`. If git is not available, download https://github.com/joedilloncpa/pii-scrubber/archive/refs/heads/main.zip, extract it, and rename the folder to `pii-scrubber`.
+2. Download https://github.com/joedilloncpa/pii-scrubber/releases/latest/download/pii-scrubber.zip into their Documents folder and extract it. The zip contains a single `pii-scrubber` folder. Use the zip rather than `git clone`; it needs no git install and it is how downloads are counted.
 3. From inside that folder, run the launcher: Mac `bash "Start PII Scrubber.command"`, Windows `"Start PII Scrubber.bat"`. It creates a `.venv`, installs `requirements.txt`, and starts Streamlit on http://localhost:8711. The first run takes one to three minutes. If the launcher cannot be used, do the same by hand: `python3 -m venv .venv`, then `.venv/bin/python -m pip install -r requirements.txt` (Windows: `.venv\Scripts\python.exe`), then `.venv/bin/python -m streamlit run app.py`.
 4. Confirm `http://localhost:8711/_stcore/health` returns `ok`, then open http://localhost:8711 in their browser.
 5. Tell the person: the app runs only on this computer and sends nothing anywhere; to start it next time they double-click the Start file in the `pii-scrubber` folder; the key file maps the replacements back to the originals and must stay private.
@@ -37,7 +39,7 @@ You don't need to know how to code. You need Python, which is free, and this fol
 **Mac**
 
 1. Install Python if you don't have it: go to [python.org/downloads/macos](https://www.python.org/downloads/macos/), click the big download button, open the file and click Continue through the installer.
-2. On this page click the green **Code** button, then **Download ZIP**. Double-click the ZIP in your Downloads folder to unzip it. Move the `pii-scrubber` folder somewhere you'll find it, like Documents.
+2. [Download the app](https://github.com/joedilloncpa/pii-scrubber/releases/latest/download/pii-scrubber.zip) (no GitHub account needed). Double-click the ZIP in your Downloads folder to unzip it. Move the `pii-scrubber` folder somewhere you'll find it, like Documents.
 3. Open the folder. Right-click **Start PII Scrubber.command** and choose **Open**, then **Open** again in the warning. (The warning appears because the file came from the internet. You only have to do this the first time.)
 4. A Terminal window opens and sets things up. The first run takes a minute or two. After that your browser opens the scrubber automatically.
 5. If macOS asks whether Terminal can access your Downloads or Documents folder, click OK.
@@ -45,7 +47,7 @@ You don't need to know how to code. You need Python, which is free, and this fol
 **Windows**
 
 1. Install Python if you don't have it: go to [python.org/downloads/windows](https://www.python.org/downloads/windows/), click the big download button and run it. **On the first screen tick "Add python.exe to PATH"** before clicking Install Now.
-2. On this page click the green **Code** button, then **Download ZIP**. Right-click the ZIP in Downloads and choose **Extract All**. Move the `pii-scrubber` folder somewhere you'll find it, like Documents.
+2. [Download the app](https://github.com/joedilloncpa/pii-scrubber/releases/latest/download/pii-scrubber.zip) (no GitHub account needed). Right-click the ZIP in Downloads and choose **Extract All**. Move the `pii-scrubber` folder somewhere you'll find it, like Documents.
 3. Open the folder and double-click **Start PII Scrubber.bat**. If Windows shows "Windows protected your PC", click **More info**, then **Run anyway**. (You only have to do this once.)
 4. A black window opens and sets things up. The first run takes a minute or two. After that your browser opens the scrubber automatically.
 
@@ -115,6 +117,10 @@ Run it from inside the folder so `.streamlit/config.toml` is picked up (it binds
 ## How it works
 
 `scrubber/core.py` holds the detection rules and the label book that keeps Person 3 as Person 3 across the whole file. `tabular.py`, `docx_handler.py` and `pdf_handler.py` find text in each format and write the replacements back in place: cell by cell for spreadsheets, run by run for Word so formatting survives, and as true redactions (text removed, not just covered) for PDFs. `engine.py` runs detection twice so that anything found once by a strong signal is caught everywhere, then re-reads the finished file and checks that no original value, SSN, email or phone pattern remains. `app.py` is the interface.
+
+## Releasing a new version (maintainer note)
+
+`./make_release.sh 1.1` zips the folder, tags it, and publishes a GitHub release with `pii-scrubber.zip` attached. The `releases/latest/download/pii-scrubber.zip` link always serves the newest one, and GitHub shows the download count on each release page.
 
 ## License
 
