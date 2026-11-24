@@ -81,15 +81,23 @@ sample_choice = None
 if up is None:
     st.info("Pick the file type, then drop a file in. You'll see exactly what gets scrubbed before anything is downloaded.")
     if sample_dir.exists():
-        sample_choice = st.selectbox("No file handy? Try one of the fake samples", ["(choose)"] + list(SAMPLES), index=0)
+        st.subheader("Test the app")
+        st.write("Four practice files come with the app. Every name, number and address in them is invented. "
+                 "Pick one to run it here, or download a copy to open and compare against the scrubbed result.")
+        sample_choice = st.selectbox("Run a sample file", ["(choose)"] + list(SAMPLES), index=0)
         if sample_choice == "(choose)":
             sample_choice = None
+        dl_cols = st.columns(len(SAMPLES))
+        for col, (label, fname) in zip(dl_cols, SAMPLES.items()):
+            fpath = sample_dir / fname
+            if fpath.exists():
+                col.download_button(f"Download {label}", fpath.read_bytes(), file_name=fname, width="stretch", key=f"dl_{fname}")
     if sample_choice is None:
         st.stop()
     sample_path = sample_dir / SAMPLES[sample_choice]
     data = sample_path.read_bytes()
     file_type = file_type_for(sample_path.name)
-    st.caption(f"Using the sample file. Every name and number in it is invented.")
+    st.caption("Running on the sample file.")
 else:
     detected = file_type_for(up.name)
     if detected and detected != file_type:

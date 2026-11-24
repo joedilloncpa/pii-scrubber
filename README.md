@@ -59,7 +59,20 @@ You don't need to know how to code. You need Python, which is free, and this fol
 4. Click **Apply and build the scrubbed file**. The app rescans its own output and tells you whether anything slipped through.
 5. Download the scrubbed file. Download the **key file** too if you'll need to map Person 1 back to a real name later. The key file contains the originals, so keep it private and never send it along with the scrubbed file.
 
-The `samples` folder has four fake files (payroll CSV, customer list Excel, engagement letter Word, employee form PDF) you can practice on. Every name, number and address in them is made up.
+## Test the app
+
+Four practice files come with it. Every name, number and address in them is invented, so you can watch the scrubber work before trusting it with real data.
+
+Inside the app, the **Test the app** section (shown before you upload anything) lets you run any of them with one click, or download a copy to open alongside the scrubbed result. You can also download them here:
+
+| Sample | What's in it | Download |
+|---|---|---|
+| Payroll register (CSV) | Names, SSNs, addresses, phones, emails, employee IDs, pay data that must stay intact | [sample_payroll_register.csv](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_payroll_register.csv) |
+| Customer list (Excel) | Two sheets, company names, account numbers, a card number, names mentioned inside notes | [sample_customer_list.xlsx](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_customer_list.xlsx) |
+| Engagement letter (Word) | Names in prose, a table, a footer, bold text spanning a company name | [sample_engagement_letter.docx](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_engagement_letter.docx) |
+| Employee form (PDF) | A one-page HR form; shows true redaction with labels printed on the boxes | [sample_employee_form.pdf](https://github.com/joedilloncpa/pii-scrubber/raw/main/samples/sample_employee_form.pdf) |
+
+A good first test: download the Word sample, open it, then run it in the app and compare. You should see every name become Person N, both companies become Company N, and the SSN, phone, email, address, account numbers and date of birth turn into X's. The review list will ask you about the names it found in prose.
 
 ## What it catches
 
