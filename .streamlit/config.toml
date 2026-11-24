@@ -1,0 +1,17 @@
+[browser]
+# No usage statistics are sent anywhere
+gatherUsageStats = false
+
+[server]
+# Only reachable from this computer
+address = "localhost"
+port = 8711
+headless = false
+maxUploadSize = 200
+
+[client]
+toolbarMode = "minimal"
+
+[theme]
+base = "light"
+primaryColor = "#123524"
